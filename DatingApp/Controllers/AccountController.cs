@@ -37,6 +37,7 @@ namespace DatingApp.Controllers
 
             var user = new AppUser()
             {
+                Email = registerDTO.Email,
                 UserName = registerDTO.UserName,
                 PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(registerDTO.Password)),
                 PasswordSalt = hmac.Key

@@ -1,5 +1,6 @@
-
+﻿
 using DatingApp.EntityFramework;
+using DatingApp.Extensions;
 using DatingApp.Interfaces;
 using DatingApp.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -15,30 +16,22 @@ namespace DatingApp
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            builder.Services.AddDbContext<DatingAppContext>(options =>
-            {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-            });
+            // Connect Database
+            builder.Services.ConnectDatabase(builder.Configuration);
+            
+            // DI
+            builder.Services.RegisterDependencyInjection();
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNamingPolicy = null; // Keep original C# property names
+            });
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddCors();
 
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenKey"])),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
-                    };
-                });
-
-            builder.Services.AddScoped<ITokenService, TokenService>();
+            // Authen
+            builder.Services.Authentication(builder.Configuration);
 
             var app = builder.Build();
 
