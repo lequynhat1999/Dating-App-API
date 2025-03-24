@@ -2,6 +2,7 @@
 using DatingApp.EntityFramework;
 using DatingApp.Extensions;
 using DatingApp.Interfaces;
+using DatingApp.Middleware;
 using DatingApp.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +35,8 @@ namespace DatingApp
             builder.Services.Authentication(builder.Configuration);
 
             var app = builder.Build();
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

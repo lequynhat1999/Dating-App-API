@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DatingApp.Controllers
 {
-    [Route("api/[controller]")]
+    [Authorize]
     public class UserController : BaseController
     {
         public UserController(DatingAppContext datingAppContext) : base(datingAppContext) {
@@ -20,7 +20,6 @@ namespace DatingApp.Controllers
             return res;
         }
 
-        [Authorize]
         [HttpGet("{id}")]
         public async Task<ServiceResponse> GetUser(int id)
         {
