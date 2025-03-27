@@ -1,6 +1,7 @@
 ﻿
 using DatingApp.EntityFramework;
 using DatingApp.Extensions;
+using DatingApp.Helpers;
 using DatingApp.Interfaces;
 using DatingApp.Middleware;
 using DatingApp.Services;
@@ -27,6 +28,9 @@ namespace DatingApp
             {
                 options.JsonSerializerOptions.PropertyNamingPolicy = null; // Keep original C# property names
             });
+
+            builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddCors();

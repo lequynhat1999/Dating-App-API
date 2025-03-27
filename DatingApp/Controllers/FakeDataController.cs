@@ -7,7 +7,6 @@ using System.Text.Json;
 
 namespace DatingApp.Controllers
 {
-    [Authorize]
     public class FakeDataController : BaseController
     {
         public FakeDataController(DatingAppContext datingAppContext) : base(datingAppContext)
