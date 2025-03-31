@@ -18,9 +18,11 @@ namespace DatingApp.Repository
             _context = datingAppContext;
             _mapper = mapper;
         }
-        public async Task<AppUser> GetUserByIdAsync(int id)
+        public async Task<MemberDTO> GetUserByIdAsync(int id)
         {
-            return await _context.Users.FindAsync(id);
+            return await _context.Users
+                .ProjectTo<MemberDTO>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(user => user.ID == id);
         }
 
         public async Task<AppUser> GetUserByUserNameAsync(string userName)
@@ -41,6 +43,7 @@ namespace DatingApp.Repository
         {
             return await _context.Users
                 .ProjectTo<MemberDTO>(_mapper.ConfigurationProvider)
+                .Take(10)
                 .ToListAsync();
         }
 

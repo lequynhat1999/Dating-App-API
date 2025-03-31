@@ -37,6 +37,14 @@ namespace DatingApp.Controllers
             return res;
         }
 
+        [HttpGet("get-by-id/{id}")]
+        public async Task<ServiceResponse> GetUserByID(int id)
+        {
+            var res = new ServiceResponse();
+            res.Data = await _userRepository.GetUserByIdAsync(id);
+            return res;
+        }
+
         [HttpGet("{username}")]
         public async Task<ServiceResponse> GetUser(string username)
         {
