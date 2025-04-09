@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DatingApp.DTOs;
+using DatingApp.Entites;
 using DatingApp.EntityFramework;
 using DatingApp.Interfaces;
 using DatingApp.Model;
@@ -51,6 +52,24 @@ namespace DatingApp.Controllers
             var res = new ServiceResponse();
             var user = await _userRepository.GetUserByUserNameAsync(username);
             res.Data = _mapper.Map<MemberDTO>(user);
+            return res;
+        }
+
+        [HttpPut("update-profile")]
+        public async Task<ServiceResponse> UpdateUser([FromBody] MemberUpdateDTO memberUpdateDTO)
+        {
+            var res = new ServiceResponse();
+            var user = await _userRepository.GetUserByUserNameAsync(memberUpdateDTO.UserName);
+            _mapper.Map(memberUpdateDTO, user);
+
+            _userRepository.Update(user);
+
+            if (!await _userRepository.SaveAllAsync())
+            {
+                res.IsSuccess = false;
+                res.ErrorMessage = "Failed to update user";
+            }
+
             return res;
         }
     }

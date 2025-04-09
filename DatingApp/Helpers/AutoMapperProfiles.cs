@@ -10,6 +10,7 @@ namespace DatingApp.Helpers
         {
             CreateMap<AppUser, MemberDTO>().ForMember(dest => dest.PhotoURL, opt => opt.MapFrom(source => source.Photos.FirstOrDefault(photo => photo.IsMain).Url));
             CreateMap<Photo, PhotoDTO>();
+            CreateMap<MemberUpdateDTO, AppUser>();
         }
     }
 }

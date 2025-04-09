@@ -55,6 +55,7 @@ namespace DatingApp.Repository
         public async Task Update(AppUser user)
         {
             _context.Entry(user).State = EntityState.Modified;
+            //await _context.SaveChangesAsync();
         }
     }
 }
